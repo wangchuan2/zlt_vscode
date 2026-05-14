@@ -22,7 +22,8 @@ class FeishuNotifier:
     """飞书群机器人通知"""
 
     def __init__(self, webhook: Optional[str] = None):
-        self.webhook = webhook or FEISHU_WEBHOOK
+        # 优先使用传入的参数，其次环境变量，最后配置文件的默认值
+        self.webhook = webhook or os.environ.get("FEISHU_WEBHOOK") or FEISHU_WEBHOOK
 
     def _send(self, msg: dict) -> bool:
         """发送消息到飞书"""

@@ -1,6 +1,13 @@
-"""项目入口"""
+"""项目入口
+
+Jenkins 部署说明：
+1. 设置环境变量 ZLT_PHONE / ZLT_PASSWORD / ZLT_FEISHU_WEBHOOK
+2. 可选设置 ZLT_VS_CODE_PATH / ZLT_BASE_DIR
+3. 运行: python main.py
+"""
 
 import asyncio
+import os
 import sys
 
 from core.allure_reporter import allure
@@ -9,6 +16,11 @@ from core.test_discoverer import discover_tests
 from cases.test_runner import TestRunner
 
 logger = get_logger("main")
+
+
+def _detect_jenkins() -> bool:
+    """检测是否在 Jenkins 环境中运行"""
+    return bool(os.environ.get("JENKINS_URL") or os.environ.get("BUILD_NUMBER"))
 
 
 async def run_all():
