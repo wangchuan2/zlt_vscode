@@ -2,9 +2,15 @@
 .SYNOPSIS
     智量通自动化测试 - Jenkins 环境准备脚本
 .DESCRIPTION
-    检查并准备 Jenkins Windows Agent 上的运行环境
+    检查并准备 Jenkins Windows Agent 上的运行环境：
+    - VS Code 是否安装
+    - 智量通插件是否已安装
+    - Tesseract OCR 引擎是否可用
+    - Python 环境是否正常
 .PARAMETER Workspace
     Jenkins 工作目录路径
+.EXAMPLE
+    .\setup_env.ps1 -Workspace "C:\Jenkins\workspace\zlt-automation"
 #>
 param(
     [string]$Workspace = $env:WORKSPACE
@@ -43,6 +49,7 @@ if (-not (Test-Command "python")) {
 $pyVersion = python --version 2>&1
 Write-Status "Python 版本: $pyVersion"
 
+# 检查 pip
 if (-not (Test-Command "pip")) {
     Write-Status "未找到 pip 命令" "ERROR"
     exit 1
@@ -57,8 +64,8 @@ Write-Status "检查 VS Code..."
 $vsCodePaths = @(
     "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin\code.cmd",
     "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe",
-    "E:\Microsoft VS Code\bin\code.cmd",
-    "E:\Microsoft VS Code\Code.exe",
+    "C:\Program Files\Microsoft VS Code\bin\code.cmd",
+    "C:\Program Files\Microsoft VS Code\Code.exe",
     "C:\Program Files (x86)\Microsoft VS Code\bin\code.cmd",
     "C:\Program Files (x86)\Microsoft VS Code\Code.exe"
 )
@@ -85,6 +92,7 @@ if (-not $codeCmd) {
 
 Write-Status "VS Code 已找到: $codeCmd"
 
+# 检查 VS Code 版本
 $codeVersion = & $codeCmd --version 2>$null | Select-Object -First 1
 Write-Status "VS Code 版本: $codeVersion"
 
@@ -93,7 +101,11 @@ Write-Status "VS Code 版本: $codeVersion"
 # ============================================================
 Write-Status "检查智量通插件..."
 
+# 尝试列出已安装扩展
 $extensions = & $codeCmd --list-extensions 2>$null
+
+# 智量通插件的 publisher.name 需要根据实际情况修改
+# 如果不确定，可以在已安装的机器上运行: code --list-extensions
 $pluginKeywords = @("zltyang.ly-beta-plugin", "zhiliangtong", "zlt", "ZLT")
 $pluginFound = $false
 $matchedPlugin = $null
@@ -117,6 +129,7 @@ if ($pluginFound) {
     $extensions | ForEach-Object { Write-Status "  - $_" }
     Write-Status "请在已安装智量通插件的机器上执行 'code --list-extensions' 获取准确的插件 ID" "WARNING"
     Write-Status "获取插件 ID 后，在 Jenkins 节点上手动安装: code --install-extension <publisher.name>" "WARNING"
+    # 不退出，让管理员决定是忽略还是修复
     $exitCode = 1
 }
 
@@ -126,7 +139,7 @@ if ($pluginFound) {
 Write-Status "检查 Tesseract OCR 引擎..."
 
 $tesseractPaths = @(
-    "E:\ui_test\ocr\tesseract.exe",
+    "E:\ocr\tesseract.exe",
     "C:\Program Files\Tesseract-OCR\tesseract.exe",
     "C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
 )
