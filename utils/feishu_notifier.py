@@ -8,8 +8,9 @@
 
 import json
 import os
-import time
+from datetime import datetime
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -89,7 +90,7 @@ class FeishuNotifier:
         content = (
             f"**测试名称:** {test_name}\n"
             f"**执行状态:** <font color='{color}'>{status_text}</font>\n"
-            f"**执行时间:** {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"**执行时间:** {datetime.now(ZoneInfo('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S')}\n"
         )
         if duration:
             content += f"**耗时:** {duration}\n"
