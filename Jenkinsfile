@@ -68,11 +68,6 @@ pipeline {
             }
         }
 
-        stage('生成 Allure 报告') {
-            steps {
-                bat 'allure generate reports/allure_results -o reports/allure_report --clean || echo allure-cli not found, skipping html generation'
-            }
-        }
     }
 
     post {
