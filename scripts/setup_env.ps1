@@ -106,7 +106,7 @@ $extensions = & $codeCmd --list-extensions 2>$null
 
 # 智量通插件的 publisher.name 需要根据实际情况修改
 # 如果不确定，可以在已安装的机器上运行: code --list-extensions
-$pluginKeywords = @("zhiliangtong", "zlt", "ZLT")
+$pluginKeywords = @("zltyang.ly-beta-plugin", "zhiliangtong", "zlt", "ZLT")
 $pluginFound = $false
 $matchedPlugin = $null
 
