@@ -2,7 +2,7 @@ pipeline {
     agent { label 'windows' }
 
     triggers {
-        cron('H 2 * * *')
+        cron('15 16 * * *')
     }
 
     environment {
