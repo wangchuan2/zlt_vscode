@@ -9,6 +9,8 @@ pipeline {
         PYTHONIOENCODING = 'utf-8'
         ALLURE_RESULTS   = 'reports/allure_results'
         TZ               = 'Asia/Shanghai'
+        // 强制 Jenkins Java 进程使用 UTF-8 编码读取命令输出
+        JAVA_TOOL_OPTIONS = '-Dfile.encoding=UTF-8'
     }
 
     options {
@@ -32,25 +34,25 @@ pipeline {
                     echo "Workspace: ${workspace}"
 
                     echo "清理旧报告数据..."
-                    bat 'chcp 65001 >nul && if exist reports\\allure_results rmdir /s /q reports\\allure_results'
-                    bat 'chcp 65001 >nul && if exist reports\\allure_report rmdir /s /q reports\\allure_report'
-                    bat 'chcp 65001 >nul && if exist allure-report rmdir /s /q allure-report'
+                    bat 'if exist reports\\allure_results rmdir /s /q reports\\allure_results'
+                    bat 'if exist reports\\allure_report rmdir /s /q reports\\allure_report'
+                    bat 'if exist allure-report rmdir /s /q allure-report'
 
                     echo "Python:"
-                    bat 'chcp 65001 >nul && python --version'
+                    bat 'python --version'
                     echo "VS Code:"
-                    bat 'chcp 65001 >nul && code --version'
+                    bat 'code --version'
                     echo "Tesseract:"
-                    bat 'chcp 65001 >nul && tesseract --version || echo Tesseract not in PATH, will use full path'
+                    bat 'tesseract --version || echo Tesseract not in PATH, will use full path'
                 }
             }
         }
 
         stage('安装 Python 依赖') {
             steps {
-                bat 'chcp 65001 >nul && python -m pip install --upgrade pip setuptools wheel -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
-                bat 'chcp 65001 >nul && python -m pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
-                bat 'chcp 65001 >nul && python -m playwright install chromium'
+                bat 'python -m pip install --upgrade pip setuptools wheel -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
+                bat 'python -m pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
+                bat 'python -m playwright install chromium'
             }
         }
 
@@ -61,14 +63,14 @@ pipeline {
                     string(credentialsId: 'zlt-password', variable: 'ZLT_PASSWORD'),
                     string(credentialsId: 'zlt-feishu-webhook', variable: 'ZLT_FEISHU_WEBHOOK')
                 ]) {
-                    bat 'chcp 65001 >nul && python main.py'
+                    bat 'python main.py'
                 }
             }
         }
 
         stage('生成 Allure 报告') {
             steps {
-                bat 'chcp 65001 >nul && allure generate reports/allure_results -o reports/allure_report --clean || echo allure-cli not found, skipping html generation'
+                bat 'allure generate reports/allure_results -o reports/allure_report --clean || echo allure-cli not found, skipping html generation'
             }
         }
     }
