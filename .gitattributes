@@ -1,0 +1,5 @@
+# 强制 PowerShell 脚本在 Windows 上使用 CRLF 换行符
+*.ps1 text eol=crlf
+
+# Jenkinsfile 使用 LF
+Jenkinsfile text eol=lf

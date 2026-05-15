@@ -66,14 +66,17 @@ pipeline {
 
     post {
         always {
-            allure([
-                includeProperties: false,
-                jdk: '',
-                properties: [],
-                reportBuildPolicy: 'ALWAYS',
-                results: [[path: 'reports/allure_results']]
-            ])
-            archiveArtifacts artifacts: 'reports/allure_report/**,logs/*.log,screenshots/*.png', allowEmptyArchive: true
+            // 即使前面 stage 失败（如 checkout 超时），node 也会提供 FilePath 上下文
+            node('windows') {
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'reports/allure_results']]
+                ])
+                archiveArtifacts artifacts: 'reports/allure_report/**,logs/*.log,screenshots/*.png', allowEmptyArchive: true
+            }
         }
         failure {
             script {
