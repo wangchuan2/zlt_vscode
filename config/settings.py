@@ -18,7 +18,7 @@ def _env(name: str, default="") -> str:
 
 
 # =============== VS Code 路径 ===============
-VS_CODE_PATH = _env("ZLT_VS_CODE_PATH", r"E:\gongjubao\vscode\Microsoft VS Code\Code.exe")
+VS_CODE_PATH = _env("ZLT_VS_CODE_PATH", r"E:\Microsoft VS Code\Code.exe")
 DEBUG_PORT = int(_env("ZLT_DEBUG_PORT", "9222"))
 
 # =============== 窗口位置配置 ===============

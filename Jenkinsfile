@@ -29,7 +29,13 @@ pipeline {
             steps {
                 script {
                     def workspace = pwd()
-                    bat "powershell -ExecutionPolicy Bypass -File scripts/setup_env.ps1 -Workspace \"${workspace}\""
+                    echo "Workspace: ${workspace}"
+                    echo "Python:"
+                    bat 'python --version'
+                    echo "VS Code:"
+                    bat 'code --version'
+                    echo "Tesseract:"
+                    bat 'tesseract --version || echo Tesseract not in PATH, will use full path'
                 }
             }
         }
