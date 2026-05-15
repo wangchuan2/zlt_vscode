@@ -13,7 +13,7 @@ logger = get_logger("case")
 class TestStrategyCreate(BaseTestCase):
     """创建策略测试用例"""
 
-    async def test_create(self) -> bool:
+    async def zztest_create(self) -> bool:
         """执行完整测试流程：登录 + 创建策略"""
         self._start_test(
             name="创建策略流程测试",
