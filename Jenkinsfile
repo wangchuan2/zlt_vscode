@@ -48,7 +48,7 @@ pipeline {
 
         stage('安装 Python 依赖') {
             steps {
-                bat 'python -m pip install -r requirements.txt'
+                bat 'python -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn'
                 bat 'python -m playwright install chromium'
             }
         }
