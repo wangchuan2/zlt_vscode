@@ -8,12 +8,14 @@ pipeline {
     environment {
         PYTHONIOENCODING = 'utf-8'
         ALLURE_RESULTS   = 'reports/allure_results'
+        TZ               = 'Asia/Shanghai'
     }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '30'))
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
+        timestamps()
     }
 
     stages {
