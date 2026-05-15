@@ -55,10 +55,10 @@ async def run_all():
     all_passed = await runner.run()
 
     # 生成报告
-    logger.info("\n" + "=" * 50)
-    logger.info("生成 Allure 报告...")
-    allure.generate_report()
-    logger.info("=" * 50)
+    # logger.info("\n" + "=" * 50)
+    # logger.info("生成 Allure 报告...")
+    # allure.generate_report()
+    # logger.info("=" * 50)
 
     return all_passed
 
