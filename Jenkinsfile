@@ -8,13 +8,19 @@ pipeline {
     environment {
         PYTHONIOENCODING = 'utf-8'
         ALLURE_RESULTS   = 'reports/allure_results'
+        TZ               = 'Asia/Shanghai'
     }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '30'))
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
+        timestamps()
     }
+
+    // 解决 Windows 节点中文乱码：整体设置 UTF-8 代码页
+    // 在 Jenkins 节点系统环境变量中添加：JAVA_TOOL_OPTIONS = -Dfile.encoding=UTF-8
+    // 或者在每个 bat/powershell 步骤前手动执行 chcp 65001
 
     stages {
         stage('检出代码') {
