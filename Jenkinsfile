@@ -32,25 +32,25 @@ pipeline {
                     echo "Workspace: ${workspace}"
 
                     echo "清理旧报告数据..."
-                    bat 'if exist reports\\allure_results rmdir /s /q reports\\allure_results'
-                    bat 'if exist reports\\allure_report rmdir /s /q reports\\allure_report'
-                    bat 'if exist allure-report rmdir /s /q allure-report'
+                    bat 'chcp 65001 >nul && if exist reports\\allure_results rmdir /s /q reports\\allure_results'
+                    bat 'chcp 65001 >nul && if exist reports\\allure_report rmdir /s /q reports\\allure_report'
+                    bat 'chcp 65001 >nul && if exist allure-report rmdir /s /q allure-report'
 
                     echo "Python:"
-                    bat 'python --version'
+                    bat 'chcp 65001 >nul && python --version'
                     echo "VS Code:"
-                    bat 'code --version'
+                    bat 'chcp 65001 >nul && code --version'
                     echo "Tesseract:"
-                    bat 'tesseract --version || echo Tesseract not in PATH, will use full path'
+                    bat 'chcp 65001 >nul && tesseract --version || echo Tesseract not in PATH, will use full path'
                 }
             }
         }
 
         stage('安装 Python 依赖') {
             steps {
-                bat 'python -m pip install --upgrade pip setuptools wheel -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
-                bat 'python -m pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
-                bat 'python -m playwright install chromium'
+                bat 'chcp 65001 >nul && python -m pip install --upgrade pip setuptools wheel -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
+                bat 'chcp 65001 >nul && python -m pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com'
+                bat 'chcp 65001 >nul && python -m playwright install chromium'
             }
         }
 
@@ -61,14 +61,14 @@ pipeline {
                     string(credentialsId: 'zlt-password', variable: 'ZLT_PASSWORD'),
                     string(credentialsId: 'zlt-feishu-webhook', variable: 'ZLT_FEISHU_WEBHOOK')
                 ]) {
-                    bat 'python main.py'
+                    bat 'chcp 65001 >nul && python main.py'
                 }
             }
         }
 
         stage('生成 Allure 报告') {
             steps {
-                bat 'allure generate reports/allure_results -o reports/allure_report --clean || echo allure-cli not found, skipping html generation'
+                bat 'chcp 65001 >nul && allure generate reports/allure_results -o reports/allure_report --clean || echo allure-cli not found, skipping html generation'
             }
         }
     }
