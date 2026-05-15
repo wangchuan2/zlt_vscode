@@ -30,6 +30,12 @@ pipeline {
                 script {
                     def workspace = pwd()
                     echo "Workspace: ${workspace}"
+
+                    echo "清理旧报告数据..."
+                    bat 'if exist reports\\allure_results rmdir /s /q reports\\allure_results'
+                    bat 'if exist reports\\allure_report rmdir /s /q reports\\allure_report'
+                    bat 'if exist allure-report rmdir /s /q allure-report'
+
                     echo "Python:"
                     bat 'python --version'
                     echo "VS Code:"
