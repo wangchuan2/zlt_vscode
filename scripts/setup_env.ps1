@@ -57,8 +57,8 @@ Write-Status "检查 VS Code..."
 $vsCodePaths = @(
     "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin\code.cmd",
     "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe",
-    "C:\Program Files\Microsoft VS Code\bin\code.cmd",
-    "C:\Program Files\Microsoft VS Code\Code.exe",
+    "E:\Microsoft VS Code\bin\code.cmd",
+    "E:\Microsoft VS Code\Code.exe",
     "C:\Program Files (x86)\Microsoft VS Code\bin\code.cmd",
     "C:\Program Files (x86)\Microsoft VS Code\Code.exe"
 )
@@ -126,7 +126,7 @@ if ($pluginFound) {
 Write-Status "检查 Tesseract OCR 引擎..."
 
 $tesseractPaths = @(
-    "E:\ocr\tesseract.exe",
+    "E:\ui_test\ocr\tesseract.exe",
     "C:\Program Files\Tesseract-OCR\tesseract.exe",
     "C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
 )
