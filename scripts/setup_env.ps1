@@ -1,11 +1,4 @@
-<#
-.SYNOPSIS
-    智量通自动化测试 - Jenkins 环境准备脚本
-.DESCRIPTION
-    检查并准备 Jenkins Windows Agent 上的运行环境
-.PARAMETER Workspace
-    Jenkins 工作目录路径
-#>
+# 智量通自动化测试 - Jenkins 环境准备脚本
 param(
     [string]$Workspace = $env:WORKSPACE
 )
@@ -29,9 +22,7 @@ function Test-Command {
     }
 }
 
-# ============================================================
 # 1. 检查 Python
-# ============================================================
 Write-Status "检查 Python 环境..."
 if (-not (Test-Command "python")) {
     Write-Status "未找到 python 命令，请先在 Jenkins 节点上安装 Python 3.10+" "ERROR"
@@ -47,9 +38,7 @@ if (-not (Test-Command "pip")) {
 }
 Write-Status "pip 已就绪"
 
-# ============================================================
 # 2. 检查 VS Code
-# ============================================================
 Write-Status "检查 VS Code..."
 
 $vsCodePaths = @(
@@ -87,9 +76,7 @@ Write-Status "VS Code 已找到: $codeCmd"
 $codeVersion = & $codeCmd --version 2>$null | Select-Object -First 1
 Write-Status "VS Code 版本: $codeVersion"
 
-# ============================================================
 # 3. 检查智量通插件
-# ============================================================
 Write-Status "检查智量通插件..."
 
 $extensions = & $codeCmd --list-extensions 2>$null
@@ -116,9 +103,7 @@ if ($pluginFound) {
     $exitCode = 1
 }
 
-# ============================================================
 # 4. 检查 Tesseract OCR
-# ============================================================
 Write-Status "检查 Tesseract OCR 引擎..."
 
 $tesseractPaths = @(
@@ -148,9 +133,7 @@ if (-not $tesseractFound) {
     exit 1
 }
 
-# ============================================================
 # 5. 检查工作目录
-# ============================================================
 if (-not $Workspace) {
     Write-Status "未指定 Workspace 参数" "ERROR"
     exit 1
@@ -161,9 +144,7 @@ if (-not (Test-Path $Workspace)) {
 }
 Write-Status "工作目录: $Workspace"
 
-# ============================================================
 # 6. 汇总
-# ============================================================
 Write-Status "=========================="
 Write-Status "环境检查结果汇总:"
 Write-Status "  Python:   OK"
