@@ -48,8 +48,8 @@ pipeline {
 
         stage('安装 Python 依赖') {
             steps {
-                bat 'pip install -r requirements.txt'
-                bat 'playwright install chromium'
+                bat 'python -m pip install -r requirements.txt'
+                bat 'python -m playwright install chromium'
             }
         }
 
